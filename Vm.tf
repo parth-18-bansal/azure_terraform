@@ -1,3 +1,11 @@
+resource "azurerm_public_ip" "demo_vm_public_ip" {
+  name                = "${var.prefix}-public-ip"
+  resource_group_name = azurerm_resource_group.demo_rg.name
+  location            = azurerm_resource_group.demo_rg.location
+  allocation_method   = "Dynamic"
+}
+
+
 resource "azurerm_network_interface" "demo_nic" {
   name                = "${var.prefix}-nic"
   location            = azurerm_resource_group.demo_rg.location
@@ -7,6 +15,7 @@ resource "azurerm_network_interface" "demo_nic" {
     name                          = "democonfiguration1"
     subnet_id                     = azurerm_subnet.demo_subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = azurerm_public_ip.demo_vm_public_ip.id
   }
 }
 
